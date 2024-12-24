@@ -1,9 +1,9 @@
 import express from 'express';
 import User from '../models/userModel.js';
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.get('/', async (req, res) => {
+userRouter.get('/', async (req, res) => {
     try{
         const users = await User.find();
         console.log('Rota de busca de usuário');
@@ -13,4 +13,4 @@ router.get('/', async (req, res) => {
     }
 });
 
-export default router;
+export default userRouter;

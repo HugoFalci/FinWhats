@@ -12,7 +12,7 @@ const transactionSchema = new mongoose.Schema({
         required: true
     },
     amount: { type: Number, required: true },
-    divided: { type: Number, default: 1},
+    installments: { type: Number, default: 1},
     category: { type: String, required: true },
     date: { type: Date, default: Date.now },
     description: { type: String, default: "" }

@@ -1,4 +1,3 @@
-import { now } from 'mongoose';
 import Installment from '../models/installmentsModel.js';
 
 export const createInstallments = async (transaction) => {

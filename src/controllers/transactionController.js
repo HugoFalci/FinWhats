@@ -3,7 +3,9 @@ import { createInstallments } from './installmentsController.js';
 
 export const getTransactions = async (req, res) => {
     try {
-        const transactions = await Transaction.find();
+        const page = parseInt(req.query.page) || 0;
+        const limit = parseInt(req.query.limit) || 100;
+        const transactions = await Transaction.find().skip(page * limit).limit(limit);
         console.log('Rota de busca de transações');
         res.status(200).json(transactions);
     } catch (error) {
@@ -18,9 +20,9 @@ export const createTransaction = async (req, res) => {
             userId,
             type,
             amount,
+            installments,
             category,
-            discription, 
-            installments
+            discription
         } = req.body;
 
         if (!userId || !type || !amount || !category) {

@@ -18,4 +18,4 @@ const installmentSchema = new mongoose.Schema({
 
 const Installment = mongoose.model('Installment', installmentSchema);
 
-export default Installment;
+export default Installment; 

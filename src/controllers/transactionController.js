@@ -27,7 +27,7 @@ export const createTransaction = async (req, res) => {
 
         if (!userId || !type || !amount || !category) {
             return res.status(400).json({ message: "Todos os campos obrigatórios precisam ser preenchidos" });
-        } 
+        }
 
         if (type === 'credit' && (!installments || installments <= 0)) {
             return res.status(400).json({ message: "Transações em crédito precisam ter 1 parcela ou mais" });

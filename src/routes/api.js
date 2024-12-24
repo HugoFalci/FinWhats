@@ -14,6 +14,6 @@ app.use('/api/auth', authRouter);
 
 app.get('/', (req, res) => {
     res.send('Servidor rodando!'); 
-});
+}); 
 
 export default app;

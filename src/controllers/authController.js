@@ -7,7 +7,7 @@ export const loginUser = async (req, res) => {
 
         if (!phoneNumber || !password) {
             return res.status(400).json({ message: "Por favor, informe o número de telefone e a senha" });
-        }  
+        };
 
         const user = await User.findOne({ phoneNumber });
 

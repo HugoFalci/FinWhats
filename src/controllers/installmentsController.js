@@ -7,7 +7,7 @@ export const createInstallments = async (transaction) => {
         const today = new Date();
         const installmentsToSave = [];
 
-        for (let i = 1; i <= installments; i++) { 
+        for (let i = 1; i <= installments; i++) {
             const dueDate = new Date(today);
 
             dueDate.setMonth(today.getMonth() + i);

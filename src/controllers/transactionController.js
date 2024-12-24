@@ -1,4 +1,5 @@
 import Transaction from '../models/transactionModel.js';
+import { createInstallments } from './installmentsController.js';
 
 export const getTransactions = async (req, res) => {
     try {
@@ -40,7 +41,15 @@ export const createTransaction = async (req, res) => {
         });
 
         await transaction.save();
-        console.log("Transação criada!", transaction);
+        console.log("Transação criada: ", transaction);
+
+        if (type === 'credit') {
+            const result = await createInstallments(transaction);
+            if (!result.success) {
+                return res.status(500).json({ message: result.message });
+            }
+        }
+
         res.status(201).json(transaction);
     } catch (error) {
         console.error("Erro ao criar a transação", error.message);

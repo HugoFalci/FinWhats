@@ -9,7 +9,7 @@ const installmentSchema = new mongoose.Schema({
     installmentNumber: { type: Number, required: true },
     dueDate: { type: Number, required: true },
     amount: { type: Number, required: true},
-    status: { 
+    status: {  
         type: String,
         enum: ['pending', 'paid', 'overdue'],
         default: 'pending'

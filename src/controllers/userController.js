@@ -34,7 +34,7 @@ export const createUsers = async (req, res) => {
     } catch (error) {
         console.error("Falha ao criar novo usuário: ", error.message);
         res.status(500).json({ message: "Falha ao criar novo usuário: " });
-    }
+    } 
 };
 
 export const updateUser = async (req, res) => {

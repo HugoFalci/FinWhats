@@ -7,7 +7,7 @@ export const loginUser = async (req, res) => {
 
         if (!phoneNumber || !password) {
             return res.status(400).json({ message: "Por favor, informe o número de telefone e a senha" });
-        }
+        }  
 
         const user = await User.findOne({ phoneNumber });
 
@@ -34,7 +34,7 @@ export const registerUser = async (req, res) => {
         if (!name || !phoneNumber || !password) {
             return res.status(400).json({ message: 'Todos os campos obrigatórios precisam ser preenchidos.' });
         }
-        
+
         const existingUser = await User.findOne({ phoneNumber });
         if (existingUser) {
             return res.status(400).json({ message: 'Número de telefone já registrado.' });

@@ -58,8 +58,8 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
-
         const user = await User.findByIdAndDelete(id);
+        
         if (!user) {
             return res.status(404).json({ message: 'Usuário não encontrado.' });
         }

@@ -49,7 +49,7 @@ export const createTransaction = async (req, res) => {
 
         if (type === 'credit') {
             const result = await createInstallments(transaction);
-            
+
             if (!result.success) {
                 return res.status(500).json({ message: result.message });
             }
@@ -60,4 +60,12 @@ export const createTransaction = async (req, res) => {
         console.error("Erro ao criar a transação", error.message);
         res.status(500).json({ message: "Erro ao criar transação." });
     }
+};
+
+export const updateTransaction = async (req, res) => {
+
+};
+
+export const deleteTransaction = async (req, res) => {
+
 };

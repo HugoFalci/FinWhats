@@ -67,13 +67,13 @@ export const updateTransaction = async (req, res) => {
         const { id } = req.params;
         const updates = req.body;
 
-        const user = await Transaction.findByIdAndUpdate(id, updates, { new: true });
-        if (!user) {
+        const transaction = await Transaction.findByIdAndUpdate(id, updates, { new: true });
+        if (!transaction) {
             return res.status(404).json({ message: 'Transação não encontrada.' });
         }
 
-        console.log('Transação atualizado:', user);
-        res.status(200).json(user);
+        console.log('Transação atualizado:', transaction);
+        res.status(200).json(transaction);
     } catch (error) {
         console.error('Erro ao atualizar a transação:', error.message);
         res.status(500).json({ message: 'Erro ao atualizar a transação.' });
@@ -83,19 +83,19 @@ export const updateTransaction = async (req, res) => {
 export const deleteTransaction = async (req, res) => {
     try {
         const { id } = req.params;
-        const user = await Transaction.findByIdAndDelete(id);
+        const transaction = await Transaction.findByIdAndDelete(id);
         
-        if (!user) {
+        if (!transaction) {
             return res.status(404).json({ message: 'Transação não encontrado.' });
         }
 
         const installments = await deleteTransactionInstallments(id);
-        
+
         if (!installments.success) {
             return res.status(500).json({ message: installments.message });
         }
 
-        console.log('Transação deletada:', user);
+        console.log('Transação deletada:', transaction);
         res.status(200).json({ message: 'Transação deletada com sucesso.' });
     } catch (error) {
         console.error('Erro ao deletar a transação:', error.message);

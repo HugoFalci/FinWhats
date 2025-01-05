@@ -8,9 +8,9 @@ import {
 
 const userRouter = express.Router();
 
+userRouter.delete('/:id', deleteUser);
+userRouter.put('/:id', updateUser);
 userRouter.get('/', getUsers);
 userRouter.post('/', createUsers);
-userRouter.put('/:id', updateUser);
-userRouter.delete('/:id', deleteUser);
 
 export default userRouter;

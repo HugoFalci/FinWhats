@@ -8,9 +8,9 @@ import {
 
 const transactionRouter = express.Router();
 
+transactionRouter.delete('/:id', deleteTransaction);
+transactionRouter.put('/:id', updateTransaction);
 transactionRouter.get('/', getTransactions);
 transactionRouter.post('/', createTransaction);
-transactionRouter.put('/:id', updateTransaction);
-transactionRouter.delete('/:id', deleteTransaction);
 
 export default transactionRouter;

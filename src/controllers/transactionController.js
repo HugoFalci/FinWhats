@@ -63,9 +63,36 @@ export const createTransaction = async (req, res) => {
 };
 
 export const updateTransaction = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updates = req.body;
 
+        const user = await Transaction.findByIdAndUpdate(id, updates, { new: true });
+        if (!user) {
+            return res.status(404).json({ message: 'Transação não encontrada.' });
+        }
+
+        console.log('Transação atualizado:', user);
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Erro ao atualizar a transação:', error.message);
+        res.status(500).json({ message: 'Erro ao atualizar a transação.' });
+    }
 };
 
 export const deleteTransaction = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await Transaction.findByIdAndDelete(id);
+        
+        if (!user) {
+            return res.status(404).json({ message: 'Transação não encontrado.' });
+        }
 
+        console.log('Transação deletada:', user);
+        res.status(200).json({ message: 'Transação deletada com sucesso.' });
+    } catch (error) {
+        console.error('Erro ao deletar a transação:', error.message);
+        res.status(500).json({ message: 'Erro ao deletar a transação.' });
+    }
 };

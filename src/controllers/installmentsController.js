@@ -82,20 +82,19 @@ export const deleteInstallments = async (req, res) => {
     }
 };
 
-export const deleteTransactionInstallments = async (req, res) => {
+export const deleteTransactionInstallments = async (id) => {
     try {
-        const { id } = req.params;
         const installment = await Installment.deleteMany({ transactionId: id });
         
         if (installment.deletedCount === 0) {
-            return res.status(404).json({ message: 'Transação não encontrada.' });
+            return { success: false, message: 'Nenhuma parcela encontrada para essa transação.' };
         }
 
         console.log('Parcela deletada:', installment);
         console.log('Transação das parcelas deletada:', installment);
-        res.status(200).json({ message: 'Parcelas da transação deletadas com sucesso.' });
+        return { success: true, message: 'Parcelas deletadas com sucesso.', installment };
     } catch (error) {
         console.error('Erro ao deletar as parcelas da transação:', error.message);
-        res.status(500).json({ message: 'Erro ao deletar as parcelas da transação.' });
+        return { success: false, message: 'Erro ao deletar as parcelas da transação.', error: error.message };
     }
 };

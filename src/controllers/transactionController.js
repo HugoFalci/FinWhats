@@ -1,5 +1,5 @@
 import Transaction from '../models/transactionModel.js';
-import { createInstallments } from './installmentsController.js';
+import { createInstallments, deleteTransactionInstallments } from './installmentsController.js';
 
 export const getTransactions = async (req, res) => {
     try {
@@ -87,6 +87,12 @@ export const deleteTransaction = async (req, res) => {
         
         if (!user) {
             return res.status(404).json({ message: 'Transação não encontrado.' });
+        }
+
+        const installments = await deleteTransactionInstallments(id);
+        
+        if (!installments.success) {
+            return res.status(500).json({ message: installments.message });
         }
 
         console.log('Transação deletada:', user);

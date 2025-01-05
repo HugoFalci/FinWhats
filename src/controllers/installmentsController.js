@@ -82,17 +82,32 @@ export const deleteInstallments = async (req, res) => {
     }
 };
 
-export const deleteTransactionInstallments = async (id) => {
+export const deleteTransactionInstallments = async (reqOrId, res) => {
     try {
+        let id;
+
+        if(typeof reqOrId === 'object' && reqOrId.params) {
+            id = reqOrId.params.id;
+        } else {
+            id = reqOrId
+        }
+
         const installment = await Installment.deleteMany({ transactionId: id });
         
         if (installment.deletedCount === 0) {
             return { success: false, message: 'Nenhuma parcela encontrada para essa transação.' };
         }
 
-        console.log('Parcela deletada:', installment);
-        console.log('Transação das parcelas deletada:', installment);
-        return { success: true, message: 'Parcelas deletadas com sucesso.', installment };
+        console.log('Quantidade de parcelas deletadas:', installment.deletedCount);
+        console.log('Transação das parcelas deletada:', id);
+        
+        const message = `${installment.deletedCount} parcelas deletadas com sucesso.`;
+
+        if (res) {
+            return res.status(200).json({ success: true, message });
+        }
+
+        return { success: true, message };
     } catch (error) {
         console.error('Erro ao deletar as parcelas da transação:', error.message);
         return { success: false, message: 'Erro ao deletar as parcelas da transação.', error: error.message };

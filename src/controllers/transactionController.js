@@ -1,5 +1,6 @@
 import Transaction from '../models/transactionModel.js';
-import { createInstallments, deleteTransactionInstallments } from './installmentsController.js';
+import Installment from '../models/installmentsModel.js';
+import { deleteTransactionInstallments } from './installmentsController.js';
 
 export const getTransactions = async (req, res) => {
     try {
@@ -24,15 +25,20 @@ export const createTransaction = async (req, res) => {
             amount,
             installments,
             category,
-            discription
+            description,
+            paidInstallments
         } = req.body;
 
         if (!userId || !type || !amount || !category) {
-            return res.status(400).json({ message: "Todos os campos obrigatórios precisam ser preenchidos" });
+            return res.status(400).json({ message: "Todos os campos obrigatórios precisam ser preenchidos." });
         }
 
         if (type === 'credit' && (!installments || installments <= 0)) {
-            return res.status(400).json({ message: "Transações em crédito precisam ter 1 parcela ou mais" });
+            return res.status(400).json({ message: "Transações em crédito precisam ter 1 parcela ou mais." });
+        }
+
+        if (type === 'credit' && (paidInstallments > installments)) {
+            return res.status(400).json({ message: "Parcelas pagas não podem ser maiores que o total de parcelas." });
         }
 
         const transaction = new Transaction({
@@ -40,7 +46,7 @@ export const createTransaction = async (req, res) => {
             type,
             amount,
             category,
-            discription,
+            description,
             installments: type === 'credit' ? installments : 1
         });
 
@@ -48,11 +54,25 @@ export const createTransaction = async (req, res) => {
         console.log("Transação criada: ", transaction);
 
         if (type === 'credit') {
-            const result = await createInstallments(transaction);
+            const installmentAmount = parseFloat((amount / installments).toFixed(2));
+            const start = new Date();
+            const installmentData = [];
 
-            if (!result.success) {
-                return res.status(500).json({ message: result.message });
+            for (let i = 0; i < installments; i++) {
+                const dueDate = new Date(start);
+                dueDate.setMonth(start.getMonth() + i);
+
+                installmentData.push({
+                    transactionId: transaction._id,
+                    installmentNumber: i + 1,
+                    dueDate: dueDate.getTime(),
+                    amount: installmentAmount,
+                    status: i < paidInstallments ? 'paid' : 'pending'
+                });
             }
+
+            await Installment.insertMany(installmentData);
+            console.log('Parcelas criadas:', installmentData);
         }
 
         res.status(201).json(transaction);
@@ -91,7 +111,9 @@ export const deleteTransaction = async (req, res) => {
 
         const installments = await deleteTransactionInstallments(id);
 
-        if (!installments.success) {
+        if (!installments.success && installments.message === 'Nenhuma parcela encontrada para essa transação.') {
+            console.log('Nenhuma parcela associada à transação.');
+        } else if (!installments.success) {
             return res.status(500).json({ message: installments.message });
         }
 

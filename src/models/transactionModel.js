@@ -15,7 +15,8 @@ const transactionSchema = new mongoose.Schema({
     installments: { type: Number, default: 1},
     category: { type: String, required: true },
     date: { type: Date, default: Date.now },
-    description: { type: String, default: "" }
+    description: { type: String, default: "" },
+    paidInstallments: { type: Number }
 });
 
 const Transaction = mongoose.model('Transaction', transactionSchema);

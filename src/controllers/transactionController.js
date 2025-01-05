@@ -6,7 +6,9 @@ export const getTransactions = async (req, res) => {
         const page = parseInt(req.query.page) || 0;
         const limit = parseInt(req.query.limit) || 100;
         const transactions = await Transaction.find().skip(page * limit).limit(limit);
+
         console.log('Rota de busca de transações');
+        
         res.status(200).json(transactions);
     } catch (error) {
         console.error("Erro ao buscar transações", error.message);
@@ -47,6 +49,7 @@ export const createTransaction = async (req, res) => {
 
         if (type === 'credit') {
             const result = await createInstallments(transaction);
+            
             if (!result.success) {
                 return res.status(500).json({ message: result.message });
             }

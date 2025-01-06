@@ -11,12 +11,12 @@ const transactionSchema = new mongoose.Schema({
         enum: ['debit', 'credit', 'investiment', 'pix'],
         required: true 
     },
-    amount: { type: Number, required: true },
-    installments: { type: Number, default: 1},
-    category: { type: String, required: true },
-    date: { type: Date, default: Date.now },
-    description: { type: String, default: "" },
-    paidInstallments: { type: Number }
+    amount:             { type: Number, required: true },
+    installments:       { type: Number, default: 1},
+    category:           { type: String, required: true },
+    date:               { type: Date, default: Date.now },
+    description:        { type: String, default: "" },
+    paidInstallments:   { type: Number, default: 0 }
 });
 
 const Transaction = mongoose.model('Transaction', transactionSchema);

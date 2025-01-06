@@ -6,9 +6,9 @@ const installmentSchema = new mongoose.Schema({
         ref: 'Transaction',
         required: true
     },
-    installmentNumber: { type: Number, required: true },
-    dueDate: { type: Number, required: true },
-    amount: { type: Number, required: true},
+    installmentNumber:  { type: Number, required: true },
+    dueDate:            { type: Number, required: true },
+    amount:             { type: Number, required: true },
     status: {  
         type: String,
         enum: ['pending', 'paid', 'overdue'],

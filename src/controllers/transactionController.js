@@ -8,9 +8,13 @@ export const getTransactions = async (req, res) => {
         const limit = parseInt(req.query.limit) || 100;
         const transactions = await Transaction.find().skip(page * limit).limit(limit);
 
-        console.log('Rota de busca de transações');
+        console.log('Rota de busca de transações', transactions.type);
         
-        res.status(200).json(transactions);
+        if (transactions.length == 0) {
+            res.status(200).json('Nenhuma transação cadastrada.');
+        } else {
+            res.status(200).json(transactions);
+        }
     } catch (error) {
         console.error("Erro ao buscar transações", error.message);
         res.status(500).json({ message: error.message });

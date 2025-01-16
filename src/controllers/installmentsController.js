@@ -7,8 +7,11 @@ export const getInstallments = async (req, res) => {
         const installment = await Installment.find().skip(page * limit).limit(limit);
 
         console.log('Rota de busca de parcelas');
-        
-        res.status(200).json(installment);
+        if (installment.length == 0) {
+            res.status(200).json("Nenhuma parcela cadastrada.");
+        } else {
+            res.status(200).json(installment);
+        }        
     } catch (error) {
         console.error("Erro ao buscar parcelas", error.message);
         res.status(500).json({ message: error.message });
